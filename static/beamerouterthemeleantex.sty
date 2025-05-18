@@ -1,0 +1,44 @@
+\mode<presentation>
+
+% Frame title
+\defbeamertemplate*{frametitle}{leantex}[1][]
+{
+\vskip1cm%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.2cm]{frametitle} 
+  \begin{tikzpicture}
+  \useasboundingbox[fill=none](0,0) rectangle(\the\paperwidth,1.2);
+  % \fill[primary1] (0,0) rectangle(2.95,1.2);
+  % \fill[primary1!50!cyan!80] (3.05,0) rectangle(\the\paperwidth,1.2);
+   \ifx\insertframesubtitle\@empty%
+     {
+       \node[anchor=west, secondary1-text,font=\Large] (title) at (0.8,1.0){\fontsize{18}{18}\selectfont\insertframetitle};
+       \begin{pgfonlayer}{background}
+         \node[fit={(title)}, fill=primary1!20, inner ysep=-0.6em, yshift=-1.5em, inner xsep=6em, xshift=-4.5em] {};
+         \node[fit={(title)}, fill=primary1, inner ysep=-0.6em, yshift=-1.5em, inner xsep=5em, xshift=-4.5em] {};
+       \end{pgfonlayer}
+     }
+      \else%
+      {\node[anchor= west, secondary1-text,font=\large] at (0.8,1.20){\fontsize{18}{18}\selectfont\insertframetitle};%
+       \node[anchor= west, secondary1-text,font=\small] at (1.5,0.0){\fontsize{15}{15}\selectfont\insertframesubtitle};}%
+      \fi
+  \end{tikzpicture}
+  \end{beamercolorbox}
+}
+
+% \defbeamertemplate*{frametitle}{leantex}[1][]{
+%   \nointerlineskip
+%   \vskip-1ex
+%   \begin{beamercolorbox}[wd=\paperwidth, sep=1ex, leftskip=1.5em, rightskip=1em,
+%                          colback=primary1!15!white, colframe=primary1,
+%                          #1]{frametitle}
+%     \usebeamerfont{frametitle}%
+%     \insertframetitle
+%     \ifx\insertframesubtitle\@empty%
+%     \else%
+%       {\usebeamerfont{framesubtitle}\\[-0.3ex]\insertframesubtitle}%
+%     \fi
+%   \end{beamercolorbox}%
+%   \vskip0.5ex
+% }
+
+\mode<all>

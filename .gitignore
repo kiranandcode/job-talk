@@ -1,0 +1,7 @@
+build/
+static/auto
+.DS_Store
+*.olean
+*.lock
+*.trace
+.lake

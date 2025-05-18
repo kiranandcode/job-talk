@@ -1,0 +1,95 @@
+\mode<presentation>
+
+% Frame title
+\defbeamertemplate*{title page}{leantex}[1][]{
+  \begin{tikzpicture}[overlay, remember picture]
+    \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+
+    \draw[fill=primary1!20,draw=none] (-1, 10.0) rectangle (0.025*\the\paperwidth + 10.5, -\the\paperheight);
+    \draw[fill=primary1,draw=none] (-1, 10.0) rectangle (0.025*\the\paperwidth, -\the\paperheight);
+
+    \draw [fill=primary1,draw=none] (2, -3.5) rectangle (8, -3.25);
+    \node[fill opacity=0.25] at (12, -3.5) {\color{primary1}\fontsize{300}{20}\selectfont{$\lambda$}};
+  \end{tikzpicture}
+
+   \vskip2cm%
+    \begin{beamercolorbox}[wd=12cm,leftskip=2cm,#1]{title page header}
+      \usebeamerfont{title}\inserttitle%
+    \end{beamercolorbox}%
+    \vskip1.75cm% 
+    \begin{beamercolorbox}[wd=12cm,leftskip=2.5cm,#1]{author}
+      \usebeamerfont{author}\fontsize{10}{10}\selectfont{\insertauthor}%
+    \end{beamercolorbox}
+     \vskip0.2cm%
+    \begin{beamercolorbox}[wd=12cm,leftskip=2.5cm,#1]{date}
+      \usebeamerfont{author}\fontsize{10}{10}\selectfont{\insertinstitute}%
+    \end{beamercolorbox}
+     \vskip0.2cm%
+    \begin{beamercolorbox}[wd=12cm,leftskip=2.5cm,#1]{date}
+      \usebeamerfont{author}\fontsize{10}{10}\selectfont{\insertdate}%
+    \end{beamercolorbox}
+  \vfill
+}
+
+\defbeamertemplate*{background canvas}{leantex}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \ifx\insertframetitle\@empty
+    % \ifbeamer@plainframe
+      % no background for plain frames
+    \else
+      % lambda in center-right
+      \node at ($(current page.center)+(6,-2)$) [opacity=0.1, scale=12, text=primary1] {$\lambda$};
+      % Pi in bottom-left
+      \node at ($(current page.center)+(3,-0)$) [opacity=0.1, scale=8, rotate=20, text=primary1] {$\Pi$};
+      % Sigma in top-right
+      \node at ($(current page.center)+(6,2)$) [opacity=0.1, scale=6, rotate=-20, text=primary1] {$\Sigma$};
+    \fi
+  \end{tikzpicture}
+}
+
+\setbeamertemplate{footline}{%
+  \begin{textblock*}{2cm}(\dimexpr\paperwidth-1cm,0.9\paperheight)
+    \color{white}
+    \setlength{\fboxsep}{8pt}
+    \colorbox{primary1!80!blue}{\fontsize{8}{8}\selectfont{\insertframenumber% /\inserttotalframenumber
+      }}
+  \end{textblock*}
+}
+
+\defbeamertemplate*{itemize item}{leantex}{\mbox{\small
+  \raisebox{-.35\height}{
+  \begin{tikzpicture}
+    \draw[color=primary1, line width=1.8mm] (0-10pt,0.-10pt)
+    rectangle ++(20pt,20pt);
+    \filldraw[draw=none, fill=primary1, line width=0.8mm]
+    (0.0-5pt,0.0-5pt)
+    rectangle ++(10pt, 10pt);
+  \end{tikzpicture}
+}
+}}
+
+\defbeamertemplate*{enumerate item}{leantex}{{\small
+  \raisebox{-.35\height}{
+  \begin{tikzpicture}
+    % \draw[color=primary1, line width=0.8mm] (0,0) circle (12pt);
+    \draw[color=primary1, line width=0.8mm] (0-10pt,0.0-10pt) rectangle ++(20pt, 20pt);
+
+    \node[color=secondary1-text, text width=10mm,  align=center] at (0,0) {\Large\textbf\insertenumlabel};
+    % \draw[color=primary1, line width=1.0mm] ($(0,0) + (14pt,0pt)$) --  ($(0,0) + (20pt,0pt)$);
+  \end{tikzpicture}
+  }\hspace{-0.5em}
+}}
+
+\makeatletter
+\def\@listi{\leftmargin=5em
+  \topsep=2.5em
+  % \parsep=20pt
+  \itemsep=2.5em}  % space between items
+\let\@listI\@listi
+\makeatother
+
+
+
+
+\mode<all>
+

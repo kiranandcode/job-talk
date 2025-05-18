@@ -1,0 +1,24 @@
+\mode<presentation>
+
+% requirements
+
+\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{FiraSans}
+\RequirePackage{tikz}
+\RequirePackage{etoolbox}
+
+\usetikzlibrary{calc,patterns.meta,decorations.pathmorphing,through, shapes.callouts, shadows.blur, fit}
+
+\DeclareOptionBeamer{style}{
+  \PassOptionsToPackage{style=#1}{beamercolorthemeleantex}
+}
+\ExecuteOptionsBeamer{style=purple}
+\ProcessOptionsBeamer
+
+\useinnertheme{leantex}
+\useoutertheme{leantex}
+\usecolortheme{leantex}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+\mode<all>

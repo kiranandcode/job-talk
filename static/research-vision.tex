@@ -1,0 +1,118 @@
+\begin{tikzpicture}[
+  font=\sffamily,
+  content block/.style={
+    text width=8em,
+    align = center,
+    % draw = black,
+    rounded corners=2pt, 
+    minimum width=8em,
+    minimum height=3em,
+    inner xsep=0,
+    font=\fontsize{8}{8}\selectfont\sffamily,
+    fill = white, fill opacity=0.85, text opacity=1, 
+    % text height=1em,
+    % inner sep=1.0em
+  },
+  background block/.style={
+    rounded corners=2pt, 
+    inner xsep=-0.0em, inner ysep=1em, yshift=-0.5em, line width=0.25mm
+  },
+  diagram title/.style={
+    minimum width=9em, minimum height=0.2em, text height=0.5em, text depth=-0.5em, inner sep = 0,
+    font=\fontsize{8}{8}\selectfont\sffamily
+  }
+]
+  \node[diagram title] (spec-evo-title) {Specification Evolution};
+  \node[diagram title, font=\fontsize{7}{7}\selectfont\sffamily, right=0em of spec-evo-title] (impl-evo-title) {Implementation Evolution};
+  \node[diagram title, right=0em of impl-evo-title] (eco-evo-title) {Ecosystem Evolution};
+
+
+  \node[content block, fill=kblue!25, minimum height=5.0em, yshift=1.0em, below=2em of spec-evo-title] (spec-evo-prior) {CertiSuslik:\\{\fontsize{7}{8}\selectfont\sffamily{Certified Synthesis}}};
+  \node[content block, fill=kpink!25, minimum height=5.0em, yshift=1.0em, below=2em of impl-evo-title] (impl-evo-prior) {Sisyphus:\\Proof Repair};
+  \node[content block, fill=kpurple!25, minimum height=5.0em, yshift=1.0em, below=2em of eco-evo-title,
+  ] (eco-evo-prior) {Axolocl:\\{\fontsize{7}{8}\selectfont\sffamily{Proof Localisation}}};
+
+  \node[content block,
+  fill=white,
+  fill opacity=0.95,
+  text opacity=1,
+  font=\fontsize{8}{18}\selectfont\sffamily,
+  text width=13em, align=left,
+  inner xsep=2.0em,
+  xshift=-0.7em,
+  inner ysep=0.8em,
+  % fill=white!10,
+  ] (spec-impl-future) at ($(spec-evo-prior)!0.5!(impl-evo-prior) + (0.25,-2.5)$)
+  {Beyond Sequential:\\
+    \quad - Concurrent Programs\\
+    \quad - Randomised Algorithms\\
+    \quad - Distributed Systems
+  };
+  \node[content block,
+  fill=kpurple!25, 
+  % below=2.0em of eco-evo-prior,
+  font=\fontsize{8}{20}\selectfont\sffamily,
+  inner ysep=1.5em,
+  yshift=0
+  % fill=white!10,
+  ]
+  (eco-future)
+  at (eco-evo-title |- spec-impl-future)
+  { Proof Hardening \\
+    Version Evolution \\
+    Tactic Repair };
+
+
+  \begin{pgfonlayer}{background-block}
+
+    \node[background block, inner ysep=0.325em, yshift=0.675em,
+    fit={(eco-evo-title) ($(eco-future) + (0.0, -1.475)$)}, fill=kpurple!10, draw=kpurple] {};
+    \node[background block, fit={(spec-evo-title) ($(spec-evo-title |- eco-future) + (0.0, -1.0)$)}, fill=kblue!10, draw=kblue] (spec-evo-background-block) {};
+    \node[background block, fit={(impl-evo-title) ($(impl-evo-title |- eco-future) + (0.0, -1.0)$)}, fill=kpink!10, draw=kpink] {};
+
+    \node[background block, inner ysep=0.5em, yshift=0.5em, fit={(eco-evo-title)}, fill=kpurple!40] {};
+    \node[background block, inner ysep=0.5em, yshift=0.5em, fit={(spec-evo-title)}, fill=kblue!40] {};
+    \node[background block, inner ysep=0.5em, yshift=0.5em, fit={(impl-evo-title)}, fill=kpink!40] {};
+
+    \draw[draw=kblue!40, line width=0.85mm] ($(spec-evo-title.west |- spec-evo-title.south) + (0.0, -0.13)$) --  ($(spec-evo-title.east |- spec-evo-title.south) + (0.0, -0.13)$);
+    \draw[draw=kblue!80, line width=0.25mm] ($(spec-evo-title.west |- spec-evo-title.south) + (0.0, -0.175)$) --  ($(spec-evo-title.east |- spec-evo-title.south) + (0.0, -0.175)$);
+
+    \draw[draw=kpink!40, line width=0.85mm] ($(impl-evo-title.west |- impl-evo-title.south) + (0.0, -0.13)$) --  ($(impl-evo-title.east |- impl-evo-title.south) + (0.0, -0.13)$);
+    \draw[draw=kpink!80, line width=0.25mm] ($(impl-evo-title.west |- impl-evo-title.south) + (0.0, -0.175)$) --  ($(impl-evo-title.east |- impl-evo-title.south) + (0.0, -0.175)$);
+
+    \draw[draw=kpurple!40, line width=0.85mm] ($(eco-evo-title.west |- eco-evo-title.south) + (0.0, -0.13)$) --  ($(eco-evo-title.east |- eco-evo-title.south) + (0.0, -0.13)$);
+    \draw[draw=kpurple!80, line width=0.25mm] ($(eco-evo-title.west |- eco-evo-title.south) + (0.0, -0.175)$) --  ($(eco-evo-title.east |- eco-evo-title.south) + (0.0, -0.175)$);
+
+
+    \draw[draw=kblue!80, line width=0.25mm] ($(spec-evo-title.west |- spec-evo-prior.south) + (0.0, -0.1)$) --  ($(spec-evo-title.east |- spec-evo-prior.south) + (0.0, -0.1)$);
+    \draw[draw=kpink!80, line width=0.25mm] ($(impl-evo-title.west |- impl-evo-prior.south) + (0.0, -0.1)$) --  ($(impl-evo-title.east |- impl-evo-prior.south) + (0.0, -0.1)$);
+    \draw[draw=kpurple!80, line width=0.25mm] ($(eco-evo-title.west |- eco-evo-prior.south) + (0.0, -0.1)$) --  ($(eco-evo-title.east |- eco-evo-prior.south) + (0.0, -0.1)$);
+
+
+
+
+    \node[background block, fit={(impl-evo-title) ($(impl-evo-title |- eco-future) + (0.0, -1.0)$)}, draw=kpink] {};
+    \node[background block, fit={(spec-evo-title) ($(spec-evo-title |- eco-future) + (0.0, -1.0)$)}, draw=kblue] {};
+    \node[background block, inner ysep=0.325em, yshift=0.675em, fit={(eco-evo-title) ($(eco-future) + (0.0, -1.475)$)}, draw=kpurple] {};
+
+  \end{pgfonlayer}
+  \node[
+  fit={($(spec-evo-title) + (0.0, -5.9)$) ($(impl-evo-title) + (0.0, -5.9)$) ($(eco-evo-title) + (0.0, -5.9)$)},
+  font=\fontsize{7}{7}\selectfont\sffamily, minimum width=27.25em, text width=20em, draw=iblue, rounded corners=2pt, fill=kblue!80!iblue!10!white,
+   inner ysep=1.0em, text height=0.25em,
+  ] (long-term) {Preventative Maintenance: Language Design, Unverified Code};
+
+
+  \node[left=1.0em of spec-evo-prior, text width=3.0em, align=center, font=\fontsize{8}{8}\selectfont\sffamily] {Prior\\Work};
+  \node[left=1.0em of spec-impl-future, text width=3.0em, align=center, font=\fontsize{8}{8}\selectfont\sffamily] {Future\\Work};
+  \node[left=0.3em of long-term, text width=3.0em, align=center, font=\fontsize{8}{8}\selectfont\sffamily] {Beyond};
+
+  \node[
+  fit={($(spec-evo-title) + (0.0, 0.65)$) ($(impl-evo-title) + (0.0, 0.65)$) ($(eco-evo-title) + (0.0, 0.65)$)},
+  text width=22em,
+  font=\fontsize{10}{10}\selectfont\sffamily]  {\textbf{Proof Maintenance Research Programme}};
+
+
+
+
+\end{tikzpicture}
