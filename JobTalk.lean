@@ -5,7 +5,7 @@ import JobTalk.Introduction
 
 #latex_preamble [|\title{Verified Systems that Evolve}|]
 #latex_preamble[|\author{Kiran Gopinathan}|]
-#latex_preamble[|\institute{University of Illinois Urbana Champaign}|]
+#latex_preamble[|\institute{University of Illinois Urbana-Champaign}|]
 
 
 
