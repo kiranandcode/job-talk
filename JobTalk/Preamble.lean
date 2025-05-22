@@ -11,7 +11,7 @@ import LeanTeX
 #latex_preamble [| \graphicspath{{./images}} |]
 #latex_preamble [| \include{style} |]
 
-#latex_preamble [| \usetikzlibrary{positioning, fit, backgrounds, scopes, calc, shapes.misc, arrows, arrows.meta} |]
+#latex_preamble [| \usetikzlibrary{positioning, fit, backgrounds, scopes, calc, shapes, shapes.callouts, shapes.geometric, shapes.misc, arrows, arrows.meta} |]
 #latex_preamble [| \pgfdeclarelayer{background} |]
 #latex_preamble [| \pgfdeclarelayer{background-block} |]
 #latex_preamble [| \pgfdeclarelayer{foreground} |]
