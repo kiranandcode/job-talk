@@ -1,0 +1,861 @@
+⚠ [7/29] Replayed LeanTeX.SlideDSL
+warning: ./././../lean4-beamer/././LeanTeX/SlideDSL.lean:119:31: unused variable `x`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: ./././../lean4-beamer/././LeanTeX/SlideDSL.lean:119:35: unused variable `y`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: ./././../lean4-beamer/././LeanTeX/SlideDSL.lean:121:31: unused variable `x`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: ./././../lean4-beamer/././LeanTeX/SlideDSL.lean:121:35: unused variable `y`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: ./././../lean4-beamer/././LeanTeX/SlideDSL.lean:127:42: unused variable `str`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: ./././../lean4-beamer/././LeanTeX/SlideDSL.lean:132:42: unused variable `str`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+\documentclass[aspectratio=169,xcolor={usenames,dvipsnames,svgnames}]{beamer}
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{bera}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{mathptmx}
+\usepackage{beamerthemeleantex}
+ \graphicspath{{./images}} 
+ \include{style} 
+ \usetikzlibrary{positioning, fit, backgrounds, scopes, calc, shapes, shapes.callouts, shapes.geometric, shapes.misc, arrows, arrows.meta} 
+ \pgfdeclarelayer{background} 
+ \pgfdeclarelayer{background-block} 
+ \pgfdeclarelayer{foreground} 
+ \pgfsetlayers{background, background-block, main, foreground} 
+
+\tikzset{
+   highlight comment/.style={
+     align=center,
+     fill=primary1!30,
+     inner sep=0.25cm,
+     font=\fontsize{8}{8}\selectfont,
+     path picture={
+       \draw[primary1!80, line width=2.75mm]
+         (path picture bounding box.north west) -- 
+         (path picture bounding box.north east);
+     }
+   },
+   highlight comment bad/.style={
+     align=center,
+     fill=primary2!30,
+     inner sep=0.25cm,
+     font=\fontsize{8}{8}\selectfont,
+     path picture={
+       \draw[primary2!80, line width=2.75mm]
+         (path picture bounding box.north west) -- 
+         (path picture bounding box.north east);
+     }
+   }
+}
+
+\title{Verified Systems that Evolve}
+\author{Kiran Gopinathan}
+\institute{University of Illinois Urbana-Champaign}
+
+\tikzset{
+   diagram header/.style={
+      font=\fontsize{8}{8}\selectfont,
+      minimum width=10em,
+      inner ysep=0.75em,
+      fill=#1!30,
+      path picture={
+         \draw[draw=#1!80, line width=2.75mm]
+            (path picture bounding box.south west) --
+            (path picture bounding box.south east);
+      }
+   },
+   diagram box/.style={
+      font=\fontsize{8}{8}\selectfont,
+      minimum width=10em,
+      minimum height=4em,
+      align=center,
+      fill=#1!30
+   },
+   diagram split/.style 2 args={
+     path picture={
+         \fill[#1] (path picture bounding box.north east) -- 
+                   (path picture bounding box.north west) -- 
+                   (path picture bounding box.south west) -- cycle;
+         \fill[#2] (path picture bounding box.north east) -- 
+                   (path picture bounding box.south west) -- 
+                   (path picture bounding box.south east) -- cycle;
+      }
+   },
+   diagram half/.style 2 args={
+       path picture={
+         \fill[#1] (path picture bounding box.north east) -- 
+                   (path picture bounding box.north west) -- 
+                   (path picture bounding box.south west) -- cycle;
+         -- \fill[#1]
+         -- (path picture bounding box.north west) rectangle
+         -- (path picture bounding box.south east |- path picture bounding box.south east)
+         -- ;
+         -- \fill[#2] ((path picture bounding box.north west) |- {(path picture bounding box.north)!0.5!(path picture bounding box.south)}) rectangle (path picture bounding box.south east);
+       }
+   }
+}
+
+\begin{document}\begin{frame}
+ \titlepage 
+
+\end{frame}
+\begin{frame}{Research Programme}
+\centering
+%start_block
+\begin{tikzpicture}[]
+\node[diagram header=primary1] (spec_title)  at (-10.5em, 2) {Specification};
+\node[diagram header=primary2] (impl_title)  at (0, 2) {Implementation};
+\node[diagram header=primary3] (ecosystem_title)  at (10.5em, 2) {Ecosystem};
+\node[diagram box=primary1] (spec_prior_work)  at ($(spec_title) - (0,3.5em)$) {
+           CertiSuSLiK:\\
+           {\fontsize{8}{8}\selectfont{Certified Synthesis}}
+         };
+\node[diagram box=primary2] (impl_prior_work)  at ($(impl_title) - (0,3.5em)$) {
+           Sisyphus:\\
+           {\fontsize{8}{8}\selectfont{Proof Repair}}
+         };
+\node[diagram box=primary3] (ecosystem_prior_work)  at ($(ecosystem_title) - (0,3.5em)$) {
+           Axolocl:\\
+           {\fontsize{8}{8}\selectfont{Proof Localisation}}
+         };
+\path let \p1 = (spec_title.west),\p2 = (impl_title.east),\p3 = (spec_prior_work) in node[diagram box=yellow,diagram half={primary1!30}{primary2!30},minimum height=5em,minimum width={\x2-\x1},align=left] (spec_and_impl_future_work)  at ({(\x1 + \x2)/2}, \y3 - 5em) {
+           Beyond Sequential:\\
+           {\fontsize{8}{8}\selectfont{- Concurrent Programs}}\\
+           {\fontsize{8}{8}\selectfont{- Randomised Algorithms}}\\
+           {\fontsize{8}{8}\selectfont{- Distributed Systems}}
+         };
+\end{tikzpicture}
+
+%end_block
+
+\end{frame}
+\end{document}
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% End:
+
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+entering extended mode
+(./slides.tex(./slides.tex
+
+LaTeX2e <2023-11-01> patch level 1
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-02-20>
+L3 programming layer <2024-02-20>
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamer.cls(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamer.cls
+Document Class: beamer 2024/01/06 v3.71 A class for typesetting presentations
+
+Document Class: beamer 2024/01/06 v3.71 A class for typesetting presentations
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasemodes.sty(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasemodes.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/etoolbox/etoolbox.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasedecode.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasedecode.sty))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/iftex.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/iftex.sty))
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseoptions.sty(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseoptions.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/keyval.sty))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/ifvtex.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/ifvtex.sty))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+xx))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+)) (/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+ (/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/pgf.revision.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/pgf.revision.tex))))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfil
+tered.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfil
+tered.code.tex))))))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+)m.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex)
+)
+)))) (/usr/local/texlive/2024/texmf-dist/tex/latex/base/size11.clo (/usr/local/texlive/2024/texmf-dist/tex/latex/base/size11.clo))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/trig.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/trig.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/graphics.cfg))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-def/pdftex.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-def/pdftex.def))))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.d
+ef
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.d
+ef
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
+
+df.def(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/)systemlayer/pgfsys-common-p
+df.def)))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex)))) (/usr/local/texlive/2024/texmf-dist/tex/latex/xcolor/xcolor.sty (/usr/local/texlive/2024/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/color.cfg
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics-cfg/color.cfg))
+
+Package xcolor Warning: Package option `usenames' is obsolete and ignored on in
+put line 266.
+
+
+
+Package xcolor Warning: Package option `usenames' is obsolete and ignored on in
+put line 266.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/mathcolor.ltx))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/dvipsnam.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/graphics/dvipsnam.def))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xcolor/svgnam.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xcolor/svgnam.def))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfint.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/math/pgfint.code.tex))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex))
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+
+.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+).code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+ode.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+
+ode.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+de.tex)
+)(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+
+de.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.
+tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.
+tex)))))) (/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/xxcolor.sty (/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/xxcolor.sty)
+)
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/base/atbegshi-ltx.sty (/usr/local/texlive/2024/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/infwarerr/infwarerr.sty))))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hycolor/hycolor.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hycolor/hycolor.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/auxhook/auxhook.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/auxhook/auxhook.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/refcount/refcount.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/refcount/refcount.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty (/usr/local/texlive/2024/texmf-dist/tex/latex/kvoptions/kvoptions.sty (/usr/local/texlive/2024/texmf-dist/tex/latex/kvoptions/kvoptions.sty))))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/pd1enc.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/pd1enc.def))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/intcalc/intcalc.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/intcalc/intcalc.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/puenc.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/puenc.def))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/url/url.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/url/url.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))))
+
+Package hyperref Message: Stopped early.
+
+
+
+Package hyperref Message: Stopped early.
+
+)) (/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hpdftex.def (/usr/local/texlive/2024/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atveryend-ltx.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/atveryend-ltx.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+)))))) (/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaserequires.sty
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaserequires.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasecompatibility.st
+y
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasecompatibility.st
+y)) (/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasefont.sty (/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasefont.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/amsfonts.sty))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/sansmathaccent/sansmathaccent.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/sansmathaccent/sansmathaccent.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlfile.sty(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlfile.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlogo.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/koma-script/scrlogo.sty))))))))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetranslator.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetranslator.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator.sty))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasemisc.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasemisc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetwoscreens.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseoverlay.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetwoscreens.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseoverlay.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetitle.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetitle.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasesection.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasesection.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseframe.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseframe.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseverbatim.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseverbatim.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseframesize.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseframesize.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseframecomponents.
+sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseframecomponents.
+sty (/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasecolor.sty) (/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasecolor.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasenotes.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetoc.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasenotes.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetoc.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetemplates.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseauxtemplates.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetemplates.sty(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseboxes.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseauxtemplates.sty
+))(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaseboxes.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaselocalstructure.s
+ty (/usr/local/texlive/2024/texmf-dist/tex/latex/tools/enumerate.sty))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasenavigation.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasenavigationsymbol
+s.tex
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbaselocalstructure.s
+ty (/usr/local/texlive/2024/texmf-dist/tex/latex/tools/enumerate.sty))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetheorems.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasenavigation.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasenavigationsymbol
+s.tex(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amstext.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasetheorems.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsopn.sty)(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amscls/amsthm.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasethemes.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/amscls/amsthm.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerthemedefault.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerfontthemedefault.sty
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerbasethemes.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamercolorthemedefault.st
+y
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerthemedefault.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerfontthemedefault.sty
+)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerinnerthemedefault.st
+y
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamercolorthemedefault.st
+y)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerinnerthemedefault.st
+y)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerouterthemedefault.st
+y))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/beamer/beamerouterthemedefault.st
+y (/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex))) (/usr/local/texlive/2024/texmf-dist/tex/latex/
+pgf/frontendlayer/tikz.sty(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex)))
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex))
+)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex)))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex)))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/bera.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/bera.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/textcomp.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/textcomp.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/beraserif.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/beraserif.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/berasans.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/berasans.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/beramono.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/beramono.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/t1fvs.fd
+(/usr/local/texlive/2024/texmf-dist/tex/latex/bera/t1fvs.fd))))
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/base/fontenc.sty(/usr/local/texlive/2024/texmf-dist/tex/latex/base/fontenc.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/mathptmx.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/mathptmx.sty))
+(./beamerthemeleantex.sty
+(./beamerthemeleantex.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/textpos/textpos.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/textpos/textpos.sty
+Grid set 16 x 16 = 28.45274pt x 16.00467pt
+
+Grid set 16 x 16 = 28.45274pt x 16.00467pt
+TextBlockOrigin set to 0pt x 0pt
+)TextBlockOrigin set to 0pt x 0pt
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/fira/FiraSans.sty (/usr/local/texlive/2024/texmf-dist/tex/latex/fira/FiraSans.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/ifxetex.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/ifxetex.sty)
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/ifluatex.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/iftex/ifluatex.sty))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/local/texlive/2024/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+
+(/usr/local/texlive/2024/texmf-dist/tex/generic/xkeyval/xkvutils.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/xkeyval/xkvutils.tex))))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fontaxes/fontaxes.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fontaxes/fontaxes.sty))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarycalc.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarycalc.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarypatterns.meta.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarypatterns.meta.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibrarypattern
+s.meta.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibrarypattern
+s.meta.code.tex))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarydecorations.pathmorphing.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarydecorations.pathmorphing.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarydecorations.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmoduledecoration
+s.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarydecorations.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/modules/pgfmoduledecoration
+s.code.tex))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/decorations/pgfli
+brarydecorations.pathmorphing.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/decorations/pgfli
+brarydecorations.pathmorphing.code.tex))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarythrough.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarythrough.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.callouts.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+
+s/tikzlibraryshapes.callouts.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.callouts.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.callouts.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.symbols.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.symbols.code.tex))))))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf-blur/tikzlibraryshadows.blur.
+code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/latex/pgf-blur/tikzlibraryshadows.blur.
+code.tex  v1.02, 2012/12/09  v1.02, 2012/12/09
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshadows.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshadows.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+
+s/tikzlibraryfadings.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryfadings.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings
+.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryfadings
+.code.tex))))))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryfit.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryfit.code.tex)) (./beamerinnerthemeleantex.sty (./beamerinnerthemeleantex.sty))
+(./beamerouterthemeleantex.sty
+(./beamerouterthemeleantex.sty)) (./beamercolorthemeleantex.sty (./beamercolorthemeleantex.sty))))
+
+
+
+LaTeX Warning: \include should only be used after \begin{document} on input lin
+e 11.
+
+LaTeX Warning: \include should only be used after \begin{document} on input lin
+e 11.
+
+(./style.tex(./style.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+
+s/tikzlibrarypositioning.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarypositioning.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarybackgrounds.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarybackgrounds.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryscopes.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryscopes.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.geometric.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+
+s/tikzlibraryshapes.geometric.code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.geometric.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.geometric.code.tex))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.misc.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.misc.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.misc.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.misc.code.tex))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.symbols.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.symbols.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.arrows.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.arrows.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.arrows.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.arrows.code.tex))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.multipart.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryshapes.multipart.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.multipart.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibrary
+shapes.multipart.code.tex))))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryarrows.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryarrows.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
+
+code.tex(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
+code.tex))))
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
+meta.code.tex
+(/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
+meta.code.tex))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fira/T1FiraSans-OsF.fd
+(/usr/local/texlive/2024/texmf-dist/tex/latex/fira/T1FiraSans-OsF.fd))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+(/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(./slides.aux
+(./slides.aux))
+
+*geometry* driver: auto-detecting
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* detected driver: pdftex
+(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii)
+[Loading MPS to PDF converter (version 2006.09.02).]
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty) (/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+(./slides.out)) (./slides.out))
+(./slides.out) (./slides.out)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-basic-dicti
+onary-English.dict
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-basic-dicti
+onary-English.dict)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-bibliograph
+y-dictionary-English.dict)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-bibliograph
+y-dictionary-English.dict)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-environment
+-dictionary-English.dict))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-environment
+-dictionary-English.dict
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-months-dict
+ionary-English.dict)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-months-dict
+ionary-English.dict)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-numbers-dic
+tionary-English.dict)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-numbers-dic
+tionary-English.dict)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-theorem-dic
+tionary-English.dict)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/translator/translator-theorem-dic
+tionary-English.dict)) (./slides.nav) (./slides.nav)
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <300> not available
+(Font)              size <51.59> substituted on input line 93.
+
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <222.00165> not available
+
+(Font)              size <51.59> substituted on input line 93.
+
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <180.00183> not available
+
+
+
+(Font)              size <51.59> substituted on input line 93.
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <300> not available
+(Font)              size <51.59> substituted on input line 93.
+
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <222.00165> not available
+
+(Font)              size <51.59> substituted on input line 93.
+
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <180.00183> not available
+
+(Font)              size <51.59> substituted on input line 93.
+
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omlztmcm.fd)(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omlztmcm.fd)
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omsztmcm.fd
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omsztmcm.fd))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omxztmcm.fd
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omxztmcm.fd))
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+(/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ot1ptm.fd)) [1 [1{/usr/local/t
+exlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map{/usr/local/t
+exlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}}{{/usr/local/texlive/20
+/usr/local/texlive/20
+24/texmf-dist/fonts/enc/dvips/fira/fir_iln36p.enc24/texmf-dist/fonts/enc/dvips/fira/fir_iln36p.enc}}]]
+Missing character: There is no - in font nullfont!
+Missing character: There is no - in font nullfont!
+
+Missing character: There is no - in font nullfont!
+Missing character: There is no - in font nullfont!
+
+! Package tikz Error: Cannot parse this coordinate.
+
+See the tikz package documentation for explanation.
+Type  H <return>  for immediate help.
+
+ ...                                              
+                                                  
+l.123 \end{frame}
+                 
+? ! Package tikz Error: Cannot parse this coordinate.
+
+See the tikz package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.123 \end{frame}
+                 
+? yes
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+H for help, X to quit.
+? x
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/fira/FiraSans-Regular.pf
+b></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/symbol/usyr.pfb>
+Output written on slides.pdf (1 page, 55095 bytes).
+Transcript written on slides.log.
