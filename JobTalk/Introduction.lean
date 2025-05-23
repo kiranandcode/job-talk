@@ -98,28 +98,6 @@ import JobTalk.Utils
 \tikzset{
    bold text/.style={font=\bfseries},
    big arrow/.style={->,>=stealth, line width=1.25mm, draw=primary1},
-   highlight comment/.style={
-     align=center,
-     fill=primary1!30,
-     inner sep=0.25cm,
-     font=\fontsize{8}{8}\selectfont,
-     path picture={
-       \draw[primary1!80, line width=2.75mm]
-         (path picture bounding box.north west) -- 
-         (path picture bounding box.north east);
-     }
-   },
-   highlight comment bad/.style={
-     align=center,
-     fill=primary2!30,
-     inner sep=0.25cm,
-     font=\fontsize{8}{8}\selectfont,
-     path picture={
-       \draw[primary2!80, line width=2.75mm]
-         (path picture bounding box.north west) -- 
-         (path picture bounding box.north east);
-     }
-   },
    medium text/.style={
      font=\fontsize{11}{11}\selectfont
    }
