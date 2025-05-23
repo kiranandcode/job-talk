@@ -67,7 +67,7 @@ import JobTalk.Utils
            for (n,id) in [("file_systems",fs), ("compilers",comp), ("crypto",crypto), ("distrib",dist), ("osses", os)] do
              node<id-> [idea, {if n == "osses" then "draw=none" else "callout pointer shorten=2.25cm"}] at (s!"({n})") ""
 
-           node["fill=white", "draw=primary1!30", "line width=0.55mm", "minimum width=8cm", "minimum height=0.75cm"]  at (0,0) ""
+           node<verified->["fill=white", "draw=primary1!30", "line width=0.55mm", "minimum width=8cm", "minimum height=0.75cm"]  at (0,0) ""
 
          node<comp1->["example"] at ("($(compilers) + (-1.25, 1.0)$)") "CakeML"
          node<comp2->["example"] at ("($(compilers) + (1.25, 1.0)$)") "CompCert"
