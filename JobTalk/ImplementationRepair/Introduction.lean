@@ -17,7 +17,7 @@ import LeanTeX
   latex![|
   \begin{center}
     \color{black}
-    \begin{tikzpicture}[overlay, remember picture, seqlist/.style={rounded corners, draw=primary1, fill=primary1!30, minimum width=3.5em, minimum height=2.5em}]
+    \begin{tikzpicture}[overlay, remember picture, seqlist/.style={rounded corners=2pt, draw=primary1, fill=primary1!30, minimum width=3.5em, minimum height=2.5em}]
       \node<1-> at (0.0, 2.0) {\fontsize{20}{18}\selectfont{\color{black}OCaml's \mintinline{ocaml}{'a Seq.t} datatype}};
 
       \draw<2>[highlight] ($(pic cs:sintroseqstart) + (0.0,-0.25)$) rectangle ($(pic cs:sintroseqend) + (0.0,0.5)$);

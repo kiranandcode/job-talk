@@ -3,4 +3,13 @@ import JobTalk.ImplementationRepair.Title
 import JobTalk.ImplementationRepair.Introduction
 import JobTalk.ImplementationRepair.ImplementationWalkthrough
 import JobTalk.ImplementationRepair.Problem
--- import JobTalk.ImplementationRepair.Bulk
+import JobTalk.ImplementationRepair.Contributions
+import JobTalk.ImplementationRepair.Directed
+import JobTalk.ImplementationRepair.Generating
+import JobTalk.ImplementationRepair.DynamicInputs
+import JobTalk.ImplementationRepair.TestingRedone
+import JobTalk.ImplementationRepair.PDTSummary
+import JobTalk.ImplementationRepair.Overall
+import JobTalk.ImplementationRepair.Evaluation
+import JobTalk.ImplementationRepair.Conclusion
+

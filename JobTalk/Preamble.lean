@@ -8,13 +8,18 @@ import LeanTeX
 #usepackage amsmath
 #usepackage amssymb
 #usepackage minted
+#usepackage pifont
+#usepackage colortbl
+#usepackage pgfplots
+#usepackage multirow
+#usepackage booktabs
 
 -- #latex_preamble [| \definecolor{bg}{rgb}{0,0,0,0}\setminted{bgcolor=white} |]
 #latex_preamble [| \graphicspath{{./images}} |]
 #latex_preamble [| \include{style} |]
 
 
-#latex_preamble [| \usetikzlibrary{positioning, fit, backgrounds, scopes, calc, shapes, shapes.callouts, shapes.geometric, shapes.misc, arrows, arrows.meta, tikzmark} |]
+#latex_preamble [| \usetikzlibrary{positioning, fit, backgrounds, scopes, calc, shapes, shapes.callouts, shapes.geometric, shapes.misc, arrows, arrows.meta, tikzmark, decorations.pathreplacing} |]
 #latex_preamble [| \pgfdeclarelayer{background} |]
 #latex_preamble [| \pgfdeclarelayer{background-block} |]
 #latex_preamble [| \pgfdeclarelayer{foreground} |]
